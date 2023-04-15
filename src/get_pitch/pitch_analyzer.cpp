@@ -9,9 +9,13 @@ using namespace std;
 /// Name space of UPC
 namespace upc {
   void PitchAnalyzer::autocorrelation(const vector<float> &x, vector<float> &r) const {
-
+    unsigned int l = 0;
+    r[l]= 0.0F;//o no hace falta??
     for (unsigned int l = 0; l < r.size(); ++l) {
   		/// \TODO Compute the autocorrelation r[l]
+      for(unsigned int n = 0; n < x.size(); ++n){
+        r[l] += x[n]*x[n+l];
+      }
     }
 
     if (r[0] == 0.0F) //to avoid log() and divide zero 
@@ -27,7 +31,10 @@ namespace upc {
     switch (win_type) {
     case HAMMING:
       /// \TODO Implement the Hamming window
-      break;
+      for (unsigned int n = 0; n < frameLen; n++){
+        window[n] = 0.54-0.46*cos((2*M_PI*n)/(frameLen-1));
+      }
+    break;
     case RECT:
     default:
       window.assign(frameLen, 1);
@@ -50,7 +57,13 @@ namespace upc {
     /// \TODO Implement a rule to decide whether the sound is voiced or not.
     /// * You can use the standard features (pot, r1norm, rmaxnorm),
     ///   or compute and use other ones.
-    return true;
+    //true si sorda
+
+   
+    
+ //provisionalmente
+
+    return false;
   }
 
   float PitchAnalyzer::compute_pitch(vector<float> & x) const {
@@ -66,7 +79,7 @@ namespace upc {
     //Compute correlation
     autocorrelation(x, r);
 
-    vector<float>::const_iterator iR = r.begin(), iRMax = iR;
+    vector<float>::const_iterator iR = r.begin(), iRMax = iR;//max autocorrelación (en el 0)
 
     /// \TODO 
 	/// Find the lag of the maximum value of the autocorrelation away from the origin.<br>
@@ -75,6 +88,17 @@ namespace upc {
 	///    - The lag corresponding to the maximum value of the pitch.
     ///	   .
 	/// In either case, the lag should not exceed that of the minimum value of the pitch.
+  //for(iR =r.begin();(max_element(0,iR) == 0) && iR != iR.end();iR++);// encontrar primer mínimo??
+  //if (iR == r.end()|| iR<npitch_min) return -1.0F; // no se encuetran valores negativos
+  // lo segundo de arriba es por lo de "In either..."--> pero no sería con el valor dónde está el máx?
+  //REVISAR LA CONDICIÓN DE ARRIBA!!!
+  //probar con max_element
+  for (iR = iRMax = r.begin() + npitch_min; iR < r.begin() + npitch_max; iR++) {
+      if (*iR > *iRMax) {
+        iRMax = iR;
+      }
+    }
+  
 
     unsigned int lag = iRMax - r.begin();
 
