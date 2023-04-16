@@ -3,6 +3,7 @@
 #include <iostream>
 #include <math.h>
 #include "pitch_analyzer.h"
+#include "pav_analysis.h"
 
 using namespace std;
 
@@ -11,11 +12,14 @@ namespace upc {
   void PitchAnalyzer::autocorrelation(const vector<float> &x, vector<float> &r) const {
     unsigned int l = 0;
     r[l]= 0.0F;//o no hace falta??
+
     for (unsigned int l = 0; l < r.size(); ++l) {
   		/// \TODO Compute the autocorrelation r[l]
       for(unsigned int n = 0; n < x.size(); ++n){
         r[l] += x[n]*x[n+l];
       }
+      //de los apuntes de clase:
+      r[l]=r[l]/x.size();
     }
 
     if (r[0] == 0.0F) //to avoid log() and divide zero 
@@ -32,7 +36,7 @@ namespace upc {
     case HAMMING:
       /// \TODO Implement the Hamming window
       for (unsigned int n = 0; n < frameLen; n++){
-        window[n] = 0.54-0.46*cos((2*M_PI*n)/(frameLen-1));
+        window[n] = 0.53836-0.46164*cos((2*M_PI*n)/(frameLen-1));
       }
     break;
     case RECT:
@@ -58,22 +62,27 @@ namespace upc {
     /// * You can use the standard features (pot, r1norm, rmaxnorm),
     ///   or compute and use other ones.
     //true si sorda
-
-   
     
- //provisionalmente
+    //Buscar que valores suelen tomar cuando se trata de sonidos sonoros (valores altos)
+    if(pot>-45 && r1norm>0.7 && rmaxnorm>0.7){
+      return false;
+    }else{
+      return true;
+    }
 
-    return false;
   }
 
   float PitchAnalyzer::compute_pitch(vector<float> & x) const {
     if (x.size() != frameLen)
       return -1.0F;
+    //Obtain ZCR:
+    //zcr = compute_zcr(x, x.size(), float fm);
 
     //Window input frame
-    for (unsigned int i=0; i<x.size(); ++i)
+    for (unsigned int i=0; i<x.size(); ++i){
       x[i] *= window[i];
-
+    }
+    //Crea un vector de tipo float llamdo r de longitud npitch_max
     vector<float> r(npitch_max);
 
     //Compute correlation
@@ -88,18 +97,30 @@ namespace upc {
 	///    - The lag corresponding to the maximum value of the pitch.
     ///	   .
 	/// In either case, the lag should not exceed that of the minimum value of the pitch.
+
   //for(iR =r.begin();(max_element(0,iR) == 0) && iR != iR.end();iR++);// encontrar primer mínimo??
   //if (iR == r.end()|| iR<npitch_min) return -1.0F; // no se encuetran valores negativos
   // lo segundo de arriba es por lo de "In either..."--> pero no sería con el valor dónde está el máx?
   //REVISAR LA CONDICIÓN DE ARRIBA!!!
   //probar con max_element
-  for (iR = iRMax = r.begin() + npitch_min; iR < r.begin() + npitch_max; iR++) {
+
+  /*
+  Empezamos el for() tomando los valores iR e iRMax el valor del elemento que se encuentra en la 
+  posición npitch_min del vector r.
+    r.begin(): devuelve el valor del primer elemento del vector
+    Bucle hasta que: iR tome la posición del último elemento del vector r
+    iR avanza una posición en cada iteración
+
+    Cuando el contenido del elemento que apunta iR sea mayor que el contenido apuntado por iRMax
+    se asignará a iRMax la dirección (puntero) del elemento apuntado por iR
+  */
+  //for (iR = iRMax = r.begin() + npitch_min; iR < r.begin() + npitch_max; iR++) {
+  for (iR = iRMax = r.begin() + npitch_min; iR != r.end(); iR++) {
       if (*iR > *iRMax) {
         iRMax = iR;
       }
-    }
+  }
   
-
     unsigned int lag = iRMax - r.begin();
 
     float pot = 10 * log10(r[0]);
@@ -107,7 +128,7 @@ namespace upc {
     //You can print these (and other) features, look at them using wavesurfer
     //Based on that, implement a rule for unvoiced
     //change to #if 1 and compile
-#if 0
+#if 1
     if (r[0] > 0.0F)
       cout << pot << '\t' << r[1]/r[0] << '\t' << r[lag]/r[0] << endl;
 #endif
