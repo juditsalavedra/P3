@@ -15,7 +15,12 @@ namespace upc {
 
     for (unsigned int l = 0; l < r.size(); ++l) {
   		/// \TODO Compute the autocorrelation r[l]
-      for(unsigned int n = 0; n < x.size(); ++n){
+      /// \DONE Autocorrelación 
+      /// - Inicializmos la autocorrelación a 0
+      /// - Acumulamos los productos cruzados \f$\sum_{n=0}^{N-l} x[n]x[n+l]\f$
+      /// - Dividimos por el número de muestras
+
+      for(unsigned int n = 0; n < x.size()-l; ++n){//no multiplicaciones finales
         r[l] += x[n]*x[n+l];
       }
       //de los apuntes de clase:
@@ -64,12 +69,11 @@ namespace upc {
     //true si sorda
     
     //Buscar que valores suelen tomar cuando se trata de sonidos sonoros (valores altos)
-    if(pot>-45 && r1norm>0.7 && rmaxnorm>0.7){
+    if(pot>this->u_pot && r1norm>this->u_r1 && rmaxnorm>this->u_rmax){//ajustar pot --> normalizar (máximo 0dB)
       return false;
     }else{
       return true;
     }
-
   }
 
   float PitchAnalyzer::compute_pitch(vector<float> & x) const {
@@ -94,7 +98,7 @@ namespace upc {
 	/// Find the lag of the maximum value of the autocorrelation away from the origin.<br>
 	/// Choices to set the minimum value of the lag are:
 	///    - The first negative value of the autocorrelation.
-	///    - The lag corresponding to the maximum value of the pitch.
+	///    - The lag corresponding to the maximum value of the pitch. -> con esto
     ///	   .
 	/// In either case, the lag should not exceed that of the minimum value of the pitch.
 
@@ -115,7 +119,7 @@ namespace upc {
     se asignará a iRMax la dirección (puntero) del elemento apuntado por iR
   */
   //for (iR = iRMax = r.begin() + npitch_min; iR < r.begin() + npitch_max; iR++) {
-  for (iR = iRMax = r.begin() + npitch_min; iR != r.end(); iR++) {
+  for (iR = iRMax = r.begin() + npitch_min; iR <= r.begin() + npitch_max; iR++) {
       if (*iR > *iRMax) {
         iRMax = iR;
       }
@@ -128,7 +132,7 @@ namespace upc {
     //You can print these (and other) features, look at them using wavesurfer
     //Based on that, implement a rule for unvoiced
     //change to #if 1 and compile
-#if 1
+#if 0
     if (r[0] > 0.0F)
       cout << pot << '\t' << r[1]/r[0] << '\t' << r[lag]/r[0] << endl;
 #endif

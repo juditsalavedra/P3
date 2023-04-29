@@ -25,6 +25,9 @@ Usage:
     get_pitch --version
 
 Options:
+    -p, --u_pot=REAL   Umbral de potencia para la determinación de sonoro/sordo [default: -1e6]
+    -1, --u_r1=REAL    Umbral de la autocorrelación de 1 para sonoro/sordo [default: 0.7]
+    -m, --u_rmax=REAL  Umbral del máximo de la autocorrelación [default: 0.4]
     -h, --help  Show this screen
     --version   Show the version of the project
 
@@ -46,6 +49,9 @@ int main(int argc, const char *argv[]) {
 
 	std::string input_wav = args["<input-wav>"].asString();
 	std::string output_txt = args["<output-txt>"].asString();
+  float u_pot = stof(args["--u_pot"].asString());
+  float u_r1 = stof(args["--u_r1"].asString());
+  float u_rmax = stof(args["--u_rmax"].asString());
 
   // Read input sound file
   unsigned int rate;
@@ -59,7 +65,7 @@ int main(int argc, const char *argv[]) {
   int n_shift = rate * FRAME_SHIFT;
 
   // Define analyzer
-  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer::RECT, 50, 500);
+  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer::RECT, 50, 500, u_pot, u_r1, u_rmax);
 
   /// \TODO
   /// Preprocess the input signal in order to ease pitch estimation. For instance,
