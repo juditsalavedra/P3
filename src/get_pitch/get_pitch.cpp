@@ -77,17 +77,18 @@ int main(int argc, const char *argv[]) {
         x[i]=0;
       }
     }
+    
     /// with offset
-  //  for (unsigned int i=0; i<x.size(); ++i){
-  //    if(x[i]>c_limit){
-  //      x[i]=x[i]-c_limit;
-  //    }else if(x[i]<-c_limit){
-  //      x[i]=x[i]+c_limit;
-  //    }else{
-  //      x[i]=0;
-  //    }
-  //  }
-
+  /*  for (unsigned int i=0; i<x.size(); ++i){
+      if(x[i]>c_limit){
+        x[i]=x[i]-c_limit;
+      }else if(x[i]<-c_limit){
+        x[i]=x[i]+c_limit;
+      }else{
+        x[i]=0;
+      }
+    }
+  */
   
   // Iterate for each frame and save values in f0 vector
   vector<float>::iterator iX;
@@ -102,14 +103,15 @@ int main(int argc, const char *argv[]) {
   /// or time-warping may be used.
   int w_mediana = 3;
   vector<float> vect(w_mediana,0);
+  vector<float> f0_filtered=f0;
   for(int i=0; i<(int)f0.size()-1; i++){
     for(int j=0; j<w_mediana; j++){
       vect[j] = f0[i+j];
     }
     sort(vect.begin(), vect.end());
-    f0[i+1] = vect[1];
+    f0_filtered[i+1] = vect[1];
   }
-
+ 
   // Write f0 contour into the output file
   ofstream os(output_txt);
   if (!os.good()) {
@@ -118,7 +120,7 @@ int main(int argc, const char *argv[]) {
   }
 
   os << 0 << '\n'; //pitch at t=0
-  for (iX = f0.begin(); iX != f0.end(); ++iX) 
+  for (iX = f0_filtered.begin(); iX != f0_filtered.end(); ++iX) 
     os << *iX << '\n';
   os << 0 << '\n';//pitch at t=Dur
 
