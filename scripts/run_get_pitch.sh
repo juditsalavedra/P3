@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Put here the program (maybe with path)
-GETF0="get_pitch"
+GETF0="get_pitch -p $1 -1 $2 -m $3 -c $4"
 
 for fwav in pitch_db/train/*.wav; do
     ff0=${fwav/.wav/.f0}

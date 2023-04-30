@@ -33,6 +33,7 @@ namespace upc {
       float u_pot;
       float u_r1;
       float u_rmax;
+      float c_limit;
  
 	///
 	/// Computes correlation from lag=0 to r.size()
@@ -58,7 +59,8 @@ namespace upc {
 					float max_F0 = MAX_F0,	///< Pitch range should be restricted to be below this value
           float u_pot = -1e6,
           float u_r1 = 0.7,
-          float u_rmax = 0.4
+          float u_rmax = 0.4,
+          float c_limit = 0.008
 				 )
 	{
       frameLen = fLen;
@@ -68,6 +70,7 @@ namespace upc {
       this->u_pot = u_pot;
       this->u_r1 = u_r1;
       this->u_rmax = u_rmax;
+      this->c_limit = c_limit;
     }
 
 	///

@@ -40,6 +40,7 @@ namespace upc {
     switch (win_type) {
     case HAMMING:
       /// \TODO Implement the Hamming window
+      /// \DONE Hamming Window
       for (unsigned int n = 0; n < frameLen; n++){
         window[n] = 0.53836-0.46164*cos((2*M_PI*n)/(frameLen-1));
       }
@@ -128,6 +129,7 @@ namespace upc {
     unsigned int lag = iRMax - r.begin();
 
     float pot = 10 * log10(r[0]);
+    
 
     //You can print these (and other) features, look at them using wavesurfer
     //Based on that, implement a rule for unvoiced

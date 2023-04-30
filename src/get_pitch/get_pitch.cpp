@@ -28,6 +28,7 @@ Options:
     -p, --u_pot=REAL   Umbral de potencia para la determinación de sonoro/sordo [default: -1e6]
     -1, --u_r1=REAL    Umbral de la autocorrelación de 1 para sonoro/sordo [default: 0.7]
     -m, --u_rmax=REAL  Umbral del máximo de la autocorrelación [default: 0.4]
+    -c, --c_limit=REAL  Umbral máximo valor a partir del cual pasa a valer 0 la señal [default: 0.008]
     -h, --help  Show this screen
     --version   Show the version of the project
 
@@ -52,6 +53,7 @@ int main(int argc, const char *argv[]) {
   float u_pot = stof(args["--u_pot"].asString());
   float u_r1 = stof(args["--u_r1"].asString());
   float u_rmax = stof(args["--u_rmax"].asString());
+  float c_limit = stof(args["--c_limit"].asString());
 
   // Read input sound file
   unsigned int rate;
@@ -65,16 +67,27 @@ int main(int argc, const char *argv[]) {
   int n_shift = rate * FRAME_SHIFT;
 
   // Define analyzer
-  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer::RECT, 50, 500, u_pot, u_r1, u_rmax);
+  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer::RECT, 50, 500, u_pot, u_r1, u_rmax, c_limit);
 
   /// \TODO
   /// Preprocess the input signal in order to ease pitch estimation. For instance,
   /// central-clipping or low pass filtering may be used.
     for (unsigned int i=0; i<x.size(); ++i){
-      if(abs(x[i])<0.008){
+      if(abs(x[i])<c_limit){
         x[i]=0;
       }
     }
+    /// with offset
+  //  for (unsigned int i=0; i<x.size(); ++i){
+  //    if(x[i]>c_limit){
+  //      x[i]=x[i]-c_limit;
+  //    }else if(x[i]<-c_limit){
+  //      x[i]=x[i]+c_limit;
+  //    }else{
+  //      x[i]=0;
+  //    }
+  //  }
+
   
   // Iterate for each frame and save values in f0 vector
   vector<float>::iterator iX;
@@ -87,6 +100,15 @@ int main(int argc, const char *argv[]) {
   /// \TODO
   /// Postprocess the estimation in order to supress errors. For instance, a median filter
   /// or time-warping may be used.
+  int w_mediana = 3;
+  vector<float> vect(w_mediana,0);
+  for(int i=0; i<(int)f0.size()-1; i++){
+    for(int j=0; j<w_mediana; j++){
+      vect[j] = f0[i+j];
+    }
+    sort(vect.begin(), vect.end());
+    f0[i+1] = vect[1];
+  }
 
   // Write f0 contour into the output file
   ofstream os(output_txt);
