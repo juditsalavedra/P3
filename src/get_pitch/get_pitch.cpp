@@ -8,6 +8,9 @@
 #include "wavfile_mono.h"
 #include "pitch_analyzer.h"
 
+#include "pav_analysis.h"///////////añadido!!!!!
+#include <math.h>///////////añadido!!!!!
+
 #include "docopt.h"
 
 #define FRAME_LEN   0.030 /* 30 ms. */
@@ -66,8 +69,38 @@ int main(int argc, const char *argv[]) {
   int n_len = rate * FRAME_LEN;
   int n_shift = rate * FRAME_SHIFT;
 
+// CALCULAR LA POTENCIA DE TODA LA SEÑAL PARA NORMALIZAR
+  cout<<"Potencia señal\n\n";
+  float pot_max= 1e-12;
+  int N = x.size();
+  for(unsigned int n=0; n<N; n++){
+  pot_max += x[n]*x[n];
+  }
+  pot_max = 10*log10(pot_max/N);
+   
+  //O CALCULAR POTENCIA DE CADA TRAMA Y VER LA MÁXIMA Y DIVIDIR ENTRE ESO??
+  /* vector<float>::iterator iX;
+  vector<float> f0;
+  for (iX = x.begin(); iX + n_len < x.end(); iX = iX + n_shift) {
+    for (unsigned int l = 0; l < r.size(); ++l) {
+      for(unsigned int n = 0; n < x.size()-l; ++n){//no multiplicaciones finales
+        r[l] += x[n]*x[n+l];
+      }
+      //de los apuntes de clase:
+      r[l]=r[l]/x.size();
+    }
+    if (r[0] == 0.0F) //to avoid log() and divide zero 
+      r[0] = 1e-10; 
+    if(pot_max < r[0]){
+      pot_max = r[0];
+    }
+  } */
+    
+   //= compute_power(&x,x.size());// se calcula el valor mayor de toda la señal y ahora comparar con las tramas
+
+
   // Define analyzer
-  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer::RECT, 50, 500, u_pot, u_r1, u_rmax, c_limit);
+  PitchAnalyzer analyzer(n_len, rate, PitchAnalyzer:: RECT, 50, 500, u_pot, u_r1, u_rmax, c_limit, pot_max);
 
   /// \TODO
   /// Preprocess the input signal in order to ease pitch estimation. For instance,
@@ -89,13 +122,14 @@ int main(int argc, const char *argv[]) {
       }
     }
   */
-  
+
   // Iterate for each frame and save values in f0 vector
   vector<float>::iterator iX;
   vector<float> f0;
   for (iX = x.begin(); iX + n_len < x.end(); iX = iX + n_shift) {
     float f = analyzer(iX, iX + n_len);
-    f0.push_back(f);
+   // std::cout << "POTENCIA" << analyzer.pot << std::endl;
+    f0.push_back(f);//el valor de f se agrega al final del vector fo
   }
 
   /// \TODO
@@ -104,7 +138,7 @@ int main(int argc, const char *argv[]) {
   int w_mediana = 3;
   vector<float> vect(w_mediana,0);
   vector<float> f0_filtered=f0;
-  for(int i=0; i<(int)f0.size()-1; i++){
+  for(int i=0; i<(int)f0.size()-1; i++){ // pq size()-1??
     for(int j=0; j<w_mediana; j++){
       vect[j] = f0[i+j];
     }

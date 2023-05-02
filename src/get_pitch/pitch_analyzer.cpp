@@ -25,6 +25,7 @@ namespace upc {
       }
       //de los apuntes de clase:
       r[l]=r[l]/x.size();
+      
     }
 
     if (r[0] == 0.0F) //to avoid log() and divide zero 
@@ -63,14 +64,17 @@ namespace upc {
       npitch_max = frameLen/2;
   }
 
-  bool PitchAnalyzer::unvoiced(float pot, float r1norm, float rmaxnorm) const {
+  bool PitchAnalyzer::unvoiced(float pot, float r1norm, float rmaxnorm, float zcr) const {
     /// \TODO Implement a rule to decide whether the sound is voiced or not.
     /// * You can use the standard features (pot, r1norm, rmaxnorm),
     ///   or compute and use other ones.
     //true si sorda
     
     //Buscar que valores suelen tomar cuando se trata de sonidos sonoros (valores altos)
-    if(pot>this->u_pot && r1norm>this->u_r1 && rmaxnorm>this->u_rmax){//ajustar pot --> normalizar (máximo 0dB)
+   
+    std::cout << "POTENCIA" << pot << std::endl;
+   
+    if((pot>this->u_pot || r1norm>this->u_r1 ) && rmaxnorm>this->u_rmax && zcr <2200){//ajustar pot --> normalizar (máximo 0dB)
       return false;
     }else{
       return true;
@@ -125,12 +129,25 @@ namespace upc {
         iRMax = iR;
       }
   }
-  
-    unsigned int lag = iRMax - r.begin();
-
-    float pot = 10 * log10(r[0]);
     
+    unsigned int lag = iRMax - r.begin();
+   
+    float pot = 10 * log10(r[0]) - this->pot_max;// potencia normalizada 
+    
+    cout << "POTENCIA\n\n";
 
+//ZCR --> INTENTAR CON LA FUNCIÓN
+   // float zcr = compute_zcr(&x[0], x.size(), samplingFreq);
+  float ZCR = 0;
+  unsigned int N = x.size();
+  for(unsigned int n=1; n<N; n++){
+    if(x[n]*x[n-1]<0){
+      ZCR++;
+    }
+  }
+  ZCR = samplingFreq*ZCR/(2*(N-1));
+
+  
     //You can print these (and other) features, look at them using wavesurfer
     //Based on that, implement a rule for unvoiced
     //change to #if 1 and compile
@@ -139,7 +156,7 @@ namespace upc {
       cout << pot << '\t' << r[1]/r[0] << '\t' << r[lag]/r[0] << endl;
 #endif
     
-    if (unvoiced(pot, r[1]/r[0], r[lag]/r[0]))
+    if (unvoiced(pot, r[1]/r[0], r[lag]/r[0],ZCR))
       return 0;
     else
       return (float) samplingFreq/(float) lag;

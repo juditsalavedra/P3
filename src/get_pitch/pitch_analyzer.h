@@ -24,7 +24,7 @@ namespace upc {
 
     void set_window(Window type); ///< pre-compute window
 
-  private:
+  public:
     std::vector<float> window; ///< precomputed window
     unsigned int frameLen, ///< length of frame (in samples). Has to be set in the constructor call
       samplingFreq, ///< sampling rate (in samples per second). Has to be set in the constructor call
@@ -34,7 +34,8 @@ namespace upc {
       float u_r1;
       float u_rmax;
       float c_limit;
- 
+      float pot_max;
+      float pot;
 	///
 	/// Computes correlation from lag=0 to r.size()
 	///
@@ -48,7 +49,7 @@ namespace upc {
 	///
 	/// Returns true is the frame is unvoiced
 	///
-    bool unvoiced(float pot, float r1norm, float rmaxnorm) const;
+    bool unvoiced(float pot, float r1norm, float rmaxnorm, float zcr) const;
 
 
   public:
@@ -60,7 +61,9 @@ namespace upc {
           float u_pot = -1e6,
           float u_r1 = 0.7,
           float u_rmax = 0.4,
-          float c_limit = 0.008
+          float c_limit = 0.008,
+          float pot_max = 0,
+          float pot=-1
 				 )
 	{
       frameLen = fLen;
@@ -71,6 +74,8 @@ namespace upc {
       this->u_r1 = u_r1;
       this->u_rmax = u_rmax;
       this->c_limit = c_limit;
+      this->pot_max = pot_max;
+      this->pot = pot;
     }
 
 	///
