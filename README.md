@@ -14,19 +14,83 @@ Ejercicios básicos
   `get_pitch`.
 
    * Complete el cálculo de la autocorrelación e inserte a continuación el código correspondiente.
+   
+     A continuación se muestra el código que se ha completado para el cálculo de la autocorrelación:
+     ```c
+     for(unsigned int l = 0; l < r.size(); ++l) {
+   	  r[l]=0.0F;
+		  for(unsigned int n = 0; n < x.size()-l; ++n){
+			  r[l] += x[n]*x[n+l];
+		  }
+		  r[l]=r[l]/x.size();
+     }
+   
+     if (r[0] == 0.0F) //to avoid log() and divide zero
+   	  r[0] = 1e-10; 
+     ```
 
    * Inserte una gŕafica donde, en un *subplot*, se vea con claridad la señal temporal de un segmento de
      unos 30 ms de un fonema sonoro y su periodo de pitch; y, en otro *subplot*, se vea con claridad la
-	 autocorrelación de la señal y la posición del primer máximo secundario.
+     autocorrelación de la señal y la posición del primer máximo secundario.
+     
+     Para la realización de este apartado, se ha realizado la grabación de la vocal `a` (sonido sonoro)
+     mediante el uso de `wavesurfer`. Se ha recortado con el objetivo de obtener una señal de duración 
+     de 30 ms aproximadamente:
+     &nbsp;&nbsp;<img width="957" alt="image" src="https://user-images.githubusercontent.com/127085765/235945975-49bbeff0-2f15-4f4e-808c-658a77b8770d.png">
+     
+     Sus propiedades (frecuencia de muestreo, número de canales, etc) se muestran en la siguiente tabla:
+     &nbsp;&nbsp;<img width="235" alt="image" src="https://user-images.githubusercontent.com/127085765/235946611-8e2ec554-ecfa-4cde-88f5-485de8454f81.png">
+     
+     Este fichero de audio se encuentra con el resto de ficheros de esta práctica con el nombre `Audio_a`.
+     
+     	NOTA: es más que probable que tenga que usar Python, Octave/MATLAB u otro programa semejante para
+	hacerlo. Se valorará la utilización de la biblioteca matplotlib de Python.
+     
+     Para la realización de los gráficos, hemos usado Matlab. El código implementado es el siguiente:
+     &nbsp;&nbsp;<img width="331" alt="image" src="https://user-images.githubusercontent.com/127085765/235957124-a3cb7de4-6058-442f-a8ae-1b2906a8a257.png">
 
-	 NOTA: es más que probable que tenga que usar Python, Octave/MATLAB u otro programa semejante para
-	 hacerlo. Se valorará la utilización de la biblioteca matplotlib de Python.
-
+     Las gráficas obtenidas se muestras a continuación:
+     &nbsp;&nbsp;<img width="957" alt="image" src="https://user-images.githubusercontent.com/127085765/235951287-48ac8110-30d5-47e2-b5cf-1c2587fd977c.png">
+     
+     
    * Determine el mejor candidato para el periodo de pitch localizando el primer máximo secundario de la
      autocorrelación. Inserte a continuación el código correspondiente.
+     
+     El fichero `pitch_analyzer.cpp` tiene una función llamada `compute_pitch`, que se encarga de encontrar
+     el mejor candidato para el periodo de pitch. A continuación se muestra el código implementado:
+     
+     ```c
+     if (x.size() != frameLen)
+     	return -1.0F;
+	
+     for (unsigned int i=0; i<x.size(); ++i){
+     	x[i] *= window[i];
+     }
+     
+     vector<float> r(npitch_max);
+     autocorrelation(x, r);
+     vector<float>::const_iterator iR = r.begin(), iRMax = iR;
+     
+     for (iR = iRMax = r.begin() + npitch_min; iR <= r.begin() + npitch_max; iR++) {
+     	if (*iR > *iRMax) {
+				iRMax = iR;
+			}
+     }
 
    * Implemente la regla de decisión sonoro o sordo e inserte el código correspondiente.
-
+     Mediante la modificación de `docopt`, se han modificado los argumentos que se pueden pasar cuando se 
+     llama a `get_pitch` o a `run_get_pitch`. De este modo, para facilitar la determinación de los umbrales, 
+     se pueden pasar todos como argumentos. En la función `unvoiced`, se comparan las características (potencia,
+     r1norm, rmaxnorm y zcr) del segmento de señal analizado con los umbrales establecidos por defecto o 
+     introducidos por el usuario al ejecutar el programa. A continuación se muestra el código implementado para 
+     determinar el criterio de decisión de sordo/sonoro:
+     ```
+     if( (pot > this->u_pot || r1norm > this->u_r1) && rmaxnorm > this->u_rmax && zcr < u_zcr){
+     	return false;
+	 }else{
+	 	return true;
+	 }
+   
    * Puede serle útil seguir las instrucciones contenidas en el documento adjunto `código.pdf`.
 
 - Una vez completados los puntos anteriores, dispondrá de una primera versión del estimador de pitch. El 
