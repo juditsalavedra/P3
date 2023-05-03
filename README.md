@@ -101,13 +101,37 @@ Ejercicios básicos
 	
 	  - Inserte una gráfica con la estimación de pitch incorporada a `wavesurfer` y, junto a ella, los 
 	    principales candidatos para determinar la sonoridad de la voz: el nivel de potencia de la señal
-		(r[0]), la autocorrelación normalizada de uno (r1norm = r[1] / r[0]) y el valor de la
-		autocorrelación en su máximo secundario (rmaxnorm = r[lag] / r[0]).
-
-		Puede considerar, también, la conveniencia de usar la tasa de cruces por cero.
-
+	    (r[0]), la autocorrelación normalizada de uno (r1norm = r[1] / r[0]) y el valor de la
+	    autocorrelación en su máximo secundario (rmaxnorm = r[lag] / r[0]).
+	    
+	    Puede considerar, también, la conveniencia de usar la tasa de cruces por cero.
+	    
 	    Recuerde configurar los paneles de datos para que el desplazamiento de ventana sea el adecuado, que
-		en esta práctica es de 15 ms.
+	    en esta práctica es de 15 ms. 
+	    	--> Se ha cambiado la configuración para que la separación entre muestras sea de 0.015 s.
+	    
+	    Para la obtención de los valores de los candidatos para determinar la sonoridad de la voz, hemos 
+	    establecido que se muestren por pantalla los valores de potencia, r1norm, rmaxnorm y zcr obtenidos
+	    para cada trama en el orden correspondiente. Ejecutamos `get_pitch` usando el fichero de audio de 
+	    prueba como input:
+	    
+	    &nbsp;&nbsp;<img width="716" alt="image" src="https://user-images.githubusercontent.com/127085765/235986226-53f2029f-5654-4afb-8dd0-22aca8ba1a8e.png">
+	    
+	    A continuación, guardamos los datos en distintos ficheros:
+	    
+	    &nbsp;&nbsp;<img width="735" alt="image" src="https://user-images.githubusercontent.com/127085765/235987087-75be7284-7b92-4077-8c09-d07996210427.png">
+	    
+	    Abrimos `wavesurfer` y mostramos los datos gráficamente:
+	    	1. Señal Temporal: `prueba.wav`
+	    	2. Contorno de pitch de la señal (Hz): calculado por `wavesurfer`
+	    	3. Potencia de la señal (dB): `prueba.pot`
+	    	4. r1norm de la señal: `prueba.r1`
+	    	5. rmaxnorm de la señal: `prueba.rmax`
+	    	6. zcr de la señal: `prueba.zcr`
+	    	
+	    &nbsp;&nbsp;<img width="958" alt="image" src="https://user-images.githubusercontent.com/127085765/235994712-c07b2768-0bee-4bcd-9da5-297e65171beb.png">
+	    
+
 
       - Use el estimador de pitch implementado en el programa `wavesurfer` en una señal de prueba y compare
 	    su resultado con el obtenido por la mejor versión de su propio sistema.  Inserte una gráfica
@@ -115,6 +139,17 @@ Ejercicios básicos
      
 		Aunque puede usar el propio Wavesurfer para obtener la representación, se valorará
 	 	el uso de alternativas de mayor calidad (particularmente Python).
+		
+		Usamos `wavesurfer` para comparar el contorno de pitch obtenido para la mejor versión de nuestro sistema 
+		con el contorno de pitch calculado por el programa wavesurfer. Se han modificado las duraciones de ventana
+		y de trama para que coincidan con los usados en nuestro sistema (duración ventana = 30 ms y se cambia de 
+		trama cada 15 ms). El resultado obtenido es:
+			1. Señal temporal: `prueba.wav`
+			2. Contorno de pitch obtenido por `wavesurfer`
+			3. Contorno de pitch obtenido por nuestro sistema: `prueba.f0`
+		 
+		&nbsp;&nbsp;<img width="956" alt="image" src="https://user-images.githubusercontent.com/127085765/236001701-5f6a6e2f-acaf-49bc-acc2-27714aba4340.png">
+
   
   * Optimice los parámetros de su sistema de estimación de pitch e inserte una tabla con las tasas de error
     y el *score* TOTAL proporcionados por `pitch_evaluate` en la evaluación de la base de datos 
