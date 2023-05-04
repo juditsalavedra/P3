@@ -33,9 +33,9 @@ namespace upc {
       float u_pot;
       float u_r1;
       float u_rmax;
+      float u_zcr;
       float c_limit;
       float pot_max;
-      float pot;
 	///
 	/// Computes correlation from lag=0 to r.size()
 	///
@@ -58,12 +58,12 @@ namespace upc {
 					Window w=PitchAnalyzer::HAMMING,	///< Window type
 					float min_F0 = MIN_F0,		///< Pitch range should be restricted to be above this value
 					float max_F0 = MAX_F0,	///< Pitch range should be restricted to be below this value
-          float u_pot = -1e6,
-          float u_r1 = 0.7,
-          float u_rmax = 0.4,
-          float c_limit = 0.008,
-          float pot_max = 0,
-          float pot=-1
+          float u_pot = -30,     ///< La potencia de una trama sonora debería estar por encima de este valor
+          float u_r1 = 0.6,       ///< La autocorrelación normalizada de una trama sonora debería estar por encima de este valor
+          float u_rmax = 0.4,     ///< La autocorrelación en su máximo secunadrio de una trama sonora debería estar por encima de este valor
+          float u_zcr = 2200,     ///< La tasa de cruces por cero de una trama sonora debería ser inferior a este valor
+          float c_limit = 0.007,  ///< Si el valor absoluto de una muestra de la señal es inferior a este valor, pasa a valer 0
+          float pot_max = 0       ///< Variable usada para normalizar la potencia de las tramas en función de la potencia de la señal
 				 )
 	{
       frameLen = fLen;
@@ -73,9 +73,9 @@ namespace upc {
       this->u_pot = u_pot;
       this->u_r1 = u_r1;
       this->u_rmax = u_rmax;
+      this->u_zcr = u_zcr;
       this->c_limit = c_limit;
       this->pot_max = pot_max;
-      this->pot = pot;
     }
 
 	///
