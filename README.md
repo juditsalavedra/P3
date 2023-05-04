@@ -131,7 +131,8 @@ Ejercicios básicos
 		1. rmaxnorm de la señal: `prueba.rmax`
 		1. zcr de la señal: `prueba.zcr`
 	    	
-	    &nbsp;&nbsp;<img width="958" alt="image" src="https://user-images.githubusercontent.com/127085765/235994712-c07b2768-0bee-4bcd-9da5-297e65171beb.png">
+	    &nbsp;&nbsp;<img width="958" alt="image" src="https://user-images.githubusercontent.com/127085765/236298857-36028001-f571-4f87-8f2b-48ef01859db6.png">
+
 		
 		3. Vemos que cuando la señal es sonora, el nivel de potencia es superior a -30 o -40 dB aproximadamente.
 		   Por este motivo, decidimos que el valor por defecto de u_pot sea -30dB.
