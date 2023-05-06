@@ -361,7 +361,29 @@ Ejercicios de ampliación
 	de la entrada y no hay realimentación. Este filtro es útil para eliminar los errores groseros.
   
   1. OPTIMIZACIÓN DE PARÁMETROS:
-  	- 
+
+Los parámetros que se han incluido para mejorar el resultado en la detección, como se ha indicado anteriormente, son: el umbral de *potencia*, el umbral de la       autocorrelación normalizada de 1 *r[1]/r[0]*, el umbral de la autocorrelación en su máximo secundario *r[lag]/r[0]*, el umbral de los cruces por cero *zcr* y el límite del *Center Clipping*. 
+
+Por otro lado, se ha definido el parámetro *potencia máxima* para normalizar los valores de la potencia respecto al máximo de la señal. Este valor se encuentra de la siguiente manera:
+
+![image](https://user-images.githubusercontent.com/125377500/236648911-41f5a348-f9fb-4d14-9002-c0fa3e434e68.png)
+
+Los valores óptimos de los parámetros se han definido tras probar diferentes valores y, con las gráficas de wavesurfer, hemos comprobado la coherencia de estos umbrales.
+ 
+ ![image](https://user-images.githubusercontent.com/125377500/236648850-fef8744d-7e67-4a1d-8b65-00dca740f103.png)
+ 
+Los parámetros u_pot, u_r1, u_rmax y u_zcr 
+
+1. u_pot = -30
+	2. u_r1 = 0.6
+	3. u_rmax = 0.4
+	4. u_zcr = 2200
+	5. c_limit = 0.007
+- Potencia: si es mayor que el umbral u_pot es sonoro (potencia elevada), sino sordo
+    /// - r1norm: Si el cociente r[1]/r[0] es mayor que el umbral u_r1 es sonoro, sino sordo
+    /// - rmaxnorm: Si el cociente r[lag]/r[0] es mayor que el umbral u_rmax es sonoro, sino sordo
+    /// - zcr: Si es inferior que el umbral u_zcr es sonoro (pocos cruces por cero), sino sordo
+	
 	   
 
 Evaluación *ciega* del estimador
