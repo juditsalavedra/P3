@@ -368,7 +368,7 @@ Por otro lado, se ha definido el parámetro *potencia máxima* para normalizar l
 
 ![image](https://user-images.githubusercontent.com/125377500/236648911-41f5a348-f9fb-4d14-9002-c0fa3e434e68.png)
 
-En la siguiente imagen se muestra el código de la asignación de valores iniciales a los parámetros en *pitch_analyzer.h*:
+En la siguiente imagen se muestra el código de la asignación de valores iniciales a los parámetros en `pitch_analyzer.h`:
  
  ![image](https://user-images.githubusercontent.com/125377500/236648850-fef8744d-7e67-4a1d-8b65-00dca740f103.png)
  
