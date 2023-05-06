@@ -156,9 +156,9 @@ Ejercicios básicos
 		y de trama para que coincidan con los usados en nuestro sistema (duración ventana = 30 ms y se cambia de 
 		trama cada 15 ms). El resultado obtenido es:
 		
-			1. Señal temporal: `prueba.wav`
-			2. Contorno de pitch obtenido por `wavesurfer`
-			3. Contorno de pitch obtenido por nuestro sistema: `prueba.f0`
+		1. Señal temporal: `prueba.wav`
+		2. Contorno de pitch obtenido por `wavesurfer`
+		3. Contorno de pitch obtenido por nuestro sistema: `prueba.f0`
 		 
 		&nbsp;&nbsp;<img width="956" alt="image" src="https://user-images.githubusercontent.com/127085765/236001701-5f6a6e2f-acaf-49bc-acc2-27714aba4340.png">
 
