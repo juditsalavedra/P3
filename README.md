@@ -49,7 +49,7 @@ Ejercicios básicos
      Para la realización de los gráficos, hemos usado Matlab. El código implementado es el siguiente:
      &nbsp;&nbsp;<img width="331" alt="image" src="https://user-images.githubusercontent.com/127085765/235957124-a3cb7de4-6058-442f-a8ae-1b2906a8a257.png">
 
-     Las gráficas obtenidas se muestras a continuación:
+     Las gráficas obtenidas se muestran a continuación:
      &nbsp;&nbsp;<img width="957" alt="image" src="https://user-images.githubusercontent.com/127085765/235951287-48ac8110-30d5-47e2-b5cf-1c2587fd977c.png">
      
      
