@@ -375,7 +375,7 @@ En la siguiente imagen se muestra el código de la asignación de valores inicia
 Los parámetros u_pot, u_r1, u_rmax y u_zcr sirven para la distinción entre sonidos sordos y sonoros, mientras que c_limit se utiliza como límite (en valor absoluto) del *Center Clipping*.
 
 Los valores óptimos de los parámetros se han definido tras probar diferentes valores y, con las gráficas de wavesurfer, hemos comprobado la coherencia de estos umbrales.
-Si llamamos a ´run_get_pitch´ con valores distintos a estos se obtienen peores resultados. Un ejemplo de ello es lo siguiente:
+Si llamamos a `run_get_pitch.sh` con valores distintos a estos se obtienen peores resultados. Un ejemplo de ello es lo siguiente:
 
 
 
