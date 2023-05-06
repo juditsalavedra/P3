@@ -155,6 +155,7 @@ Ejercicios básicos
 		con el contorno de pitch calculado por el programa wavesurfer. Se han modificado las duraciones de ventana
 		y de trama para que coincidan con los usados en nuestro sistema (duración ventana = 30 ms y se cambia de 
 		trama cada 15 ms). El resultado obtenido es:
+		
 			1. Señal temporal: `prueba.wav`
 			2. Contorno de pitch obtenido por `wavesurfer`
 			3. Contorno de pitch obtenido por nuestro sistema: `prueba.f0`
