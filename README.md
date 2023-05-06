@@ -368,11 +368,17 @@ Por otro lado, se ha definido el parámetro *potencia máxima* para normalizar l
 
 ![image](https://user-images.githubusercontent.com/125377500/236648911-41f5a348-f9fb-4d14-9002-c0fa3e434e68.png)
 
-Los valores óptimos de los parámetros se han definido tras probar diferentes valores y, con las gráficas de wavesurfer, hemos comprobado la coherencia de estos umbrales.
+En la siguiente imagen se muestra el código de la asignación de valores iniciales a los parámetros en *pitch_analyzer.h*:
  
  ![image](https://user-images.githubusercontent.com/125377500/236648850-fef8744d-7e67-4a1d-8b65-00dca740f103.png)
  
-Los parámetros u_pot, u_r1, u_rmax y u_zcr 
+Los parámetros u_pot, u_r1, u_rmax y u_zcr sirven para la distinción entre sonidos sordos y sonoros, mientras que c_limit se utiliza como límite (en valor absoluto) del *Center Clipping*.
+
+Los valores óptimos de los parámetros se han definido tras probar diferentes valores y, con las gráficas de wavesurfer, hemos comprobado la coherencia de estos umbrales.
+Si llamamos a *pitch_evaluate* con valores distintos a estos se obtienen peores resultados:
+
+
+
 
 1. u_pot = -30
 	2. u_r1 = 0.6
