@@ -362,7 +362,7 @@ Ejercicios de ampliación
   
   1. OPTIMIZACIÓN DE PARÁMETROS:
 
-Los parámetros que se han incluido para mejorar el resultado en la detección, como se ha indicado anteriormente, son: el umbral de *potencia*, el umbral de la       autocorrelación normalizada de 1 *r[1]/r[0]*, el umbral de la autocorrelación en su máximo secundario *r[lag]/r[0]*, el umbral de los cruces por cero *zcr* y el límite del *Center Clipping*. 
+Los parámetros que se han incluido para mejorar el resultado en la detección, como se ha indicado anteriormente, son: el umbral de *potencia*, el umbral de la       autocorrelación normalizada de 1 *(r[1]/r[0])*, el umbral de la autocorrelación en su máximo secundario *(r[lag]/r[0])*, el umbral de los cruces por cero *(zcr)* y el límite del *Center Clipping*. 
 
 Por otro lado, se ha definido el parámetro *potencia máxima* para normalizar los valores de la potencia respecto al máximo de la señal. Este valor se encuentra de la siguiente manera:
 
@@ -375,20 +375,11 @@ En la siguiente imagen se muestra el código de la asignación de valores inicia
 Los parámetros u_pot, u_r1, u_rmax y u_zcr sirven para la distinción entre sonidos sordos y sonoros, mientras que c_limit se utiliza como límite (en valor absoluto) del *Center Clipping*.
 
 Los valores óptimos de los parámetros se han definido tras probar diferentes valores y, con las gráficas de wavesurfer, hemos comprobado la coherencia de estos umbrales.
-Si llamamos a *pitch_evaluate* con valores distintos a estos se obtienen peores resultados:
+Si llamamos a ´run_get_pitch´ con valores distintos a estos se obtienen peores resultados. Un ejemplo de ello es lo siguiente:
 
 
 
 
-1. u_pot = -30
-	2. u_r1 = 0.6
-	3. u_rmax = 0.4
-	4. u_zcr = 2200
-	5. c_limit = 0.007
-- Potencia: si es mayor que el umbral u_pot es sonoro (potencia elevada), sino sordo
-    /// - r1norm: Si el cociente r[1]/r[0] es mayor que el umbral u_r1 es sonoro, sino sordo
-    /// - rmaxnorm: Si el cociente r[lag]/r[0] es mayor que el umbral u_rmax es sonoro, sino sordo
-    /// - zcr: Si es inferior que el umbral u_zcr es sonoro (pocos cruces por cero), sino sordo
 	
 	   
 
