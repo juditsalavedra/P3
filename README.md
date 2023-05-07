@@ -406,7 +406,7 @@ Si llamamos a `run_get_pitch.sh` con valores distintos a estos se obtienen peore
 - *c_limit* = 0.008:
 ![image](https://user-images.githubusercontent.com/125377500/236673770-12307147-5bc4-424c-bf0d-b90aa532497a.png)
 
- Con las gráficas de wavesurfer, se comprueba la coherencia de estos umbrales:
+ Con las gráficas de wavesurfer, se comprueba la coherencia de los umbrales para la diferenciación entre *voiced* y *unvoiced*:
  
  1. u_pot = -30
  2. u_r1 = 0.6
