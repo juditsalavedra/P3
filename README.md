@@ -406,7 +406,7 @@ Si llamamos a `run_get_pitch.sh` con valores distintos a estos se obtienen peore
 - *c_limit* = 0.008:
 ![image](https://user-images.githubusercontent.com/125377500/236673770-12307147-5bc4-424c-bf0d-b90aa532497a.png)
 
- Con las gráficas de wavesurfer, se comprueba la coherencia de estos umbrales si:
+ Con las gráficas de wavesurfer, se comprueba la coherencia de estos umbrales:
  
  1. u_pot = -30
  2. u_r1 = 0.6
@@ -414,7 +414,8 @@ Si llamamos a `run_get_pitch.sh` con valores distintos a estos se obtienen peore
  4. u_zcr = 2200
  
 ![image](https://user-images.githubusercontent.com/125377500/236675755-2c9e5529-b02f-4813-ac45-830c45ad3830.png)
-
+ 
+ 
 
 
 	
