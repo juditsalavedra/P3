@@ -376,11 +376,44 @@ En la siguiente imagen se muestra el código de la asignación de valores inicia
  
  ![image](https://user-images.githubusercontent.com/125377500/236648850-fef8744d-7e67-4a1d-8b65-00dca740f103.png)
  
-Los parámetros u_pot, u_r1, u_rmax y u_zcr sirven para la distinción entre sonidos sordos y sonoros, mientras que c_limit se utiliza como límite (en valor absoluto) del *Center Clipping*.
 
-Los valores óptimos de los parámetros se han definido tras probar diferentes valores y, con las gráficas de wavesurfer, hemos comprobado la coherencia de estos umbrales.
+Los valores óptimos de los parámetros se han definido tras probar diferentes valores.
+
+Los parámetros u_pot, u_r1, u_rmax y u_zcr sirven para la distinción entre sonidos sordos y sonoros a través de la función *unvoiced* de `pitch_analyzer`:
+
+![image](https://user-images.githubusercontent.com/125377500/236674121-fda2cb9b-aee1-4b95-83c8-ed7ae0081bc3.png)
+
+*(pot>this->u_pot || r1norm>this->u_r1 )* permite decidir en función de la potencia o la autocorrelación normalizada de 1. 
+
+- Por esta razón, cuando no se tiene en cuenta la potencia a la hora de decidir, una solución óptima es la siguiente:
+![image](https://user-images.githubusercontent.com/125377500/236675162-4e97120e-3ee4-4c02-86c7-6d94e3202e02.png)
+
+- Si no tenemos en cuenta r1, u_pot = -30 dB optimiza el resultado:
+![image](https://user-images.githubusercontent.com/125377500/236675245-b23674bb-96dc-4273-b242-76f3de53ac99.png)
+
+Por otro lado, c_limit se utiliza como límite (en valor absoluto) del *Center Clipping*.
+
 Si llamamos a `run_get_pitch.sh` con valores distintos a estos se obtienen peores resultados. Un ejemplo de ello es lo siguiente:
+- *u_zcr* = 2000:
+![image](https://user-images.githubusercontent.com/125377500/236673449-73e1fc4d-49c1-4630-8e1c-08c4c3bf89e6.png)
 
+- *u_pot* = -50:
+![image](https://user-images.githubusercontent.com/125377500/236673616-87c6089e-a691-43a6-9fca-c81d62715199.png)
+
+- *u_rmax* = 0.5:
+![image](https://user-images.githubusercontent.com/125377500/236674215-5cf17e90-b963-4f64-b2c2-67553b15cb61.png)
+
+- *c_limit* = 0.008:
+![image](https://user-images.githubusercontent.com/125377500/236673770-12307147-5bc4-424c-bf0d-b90aa532497a.png)
+
+ Con las gráficas de wavesurfer, se comprueba la coherencia de estos umbrales si:
+ 
+ 1. u_pot = -30
+ 2. u_r1 = 0.6
+ 3. u_rmax = 0.4
+ 4. u_zcr = 2200
+ 
+![image](https://user-images.githubusercontent.com/125377500/236675755-2c9e5529-b02f-4813-ac45-830c45ad3830.png)
 
 
 
