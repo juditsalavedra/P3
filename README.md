@@ -355,7 +355,11 @@ Ejercicios de ampliación
 	- Se repite lo mismo que se ha hecho para el caso de filtro centrado en el primer elemento para
 	el caso de filtro centrado en el último elemento
 	
-	A continuación se muestra una representación de su funcionamiento:
+	A continuación se muestra una representación de su funcionamiento con un ejemplo en el que el filtro es 
+	de tamaño 3 como el que hemos usado:
+	
+	&nbsp;&nbsp;<img width="596" alt="image" src="https://user-images.githubusercontent.com/127085765/236672890-58156aec-14f9-4735-ad9e-8ba9abbacc58.png">
+
 	
 	Es importante destacar que es un filtro NO recursivo, motivo por el cual su salida solo puede depender 
 	de la entrada y no hay realimentación. Este filtro es útil para eliminar los errores groseros.
